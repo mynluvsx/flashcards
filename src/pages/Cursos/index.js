@@ -29,6 +29,7 @@ const Cursos = () => {
           return (
             <Course
               key={curso.colecaoId}
+              id={curso.colecaoId}
               name={curso.nome}
               desc={curso.descricao}
             />

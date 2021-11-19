@@ -1,18 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Container } from "./styles";
 import axios from "axios";
 
-const Form = () => {
+const Form = ({ editar, id }) => {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [privacy, setPrivacy] = useState(false);
 
   const navigate = useNavigate();
 
+  function pegarDados() {
+    axios
+      .get(`https://flashcard-api-mayck.herokuapp.com/api/colecoes/${id}`)
+      .then(({ data }) => {
+        setName(data.nome);
+        setDesc(data.descricao);
+        setPrivacy(data.publico);
+      });
+  }
+
+  useEffect(() => {
+    if (editar) {
+      pegarDados();
+    }
+  }, []);
+
   function submit(e) {
     e.preventDefault();
+
+    if (editar) {
+      axios
+        .put(`https://flashcard-api-mayck.herokuapp.com/api/colecoes/${id}`, {
+          nome: name,
+          descricao: desc,
+          publico: privacy,
+        })
+        .finally(() => {
+          navigate("/cursos");
+        });
+      return;
+    }
+
     axios
       .post("https://flashcard-api-mayck.herokuapp.com/api/colecoes", {
         nome: name,
@@ -74,7 +104,11 @@ const Form = () => {
           value="Cancel"
           onClick={cancel}
         />
-        <input className="sendButton" type="submit" value="Add" />
+        <input
+          className="sendButton"
+          type="submit"
+          value={editar ? "Salvar" : "Adicionar"}
+        />
       </div>
     </Container>
   );

@@ -21,4 +21,23 @@ export const Container = styled.div`
     filter: brightness(0.85);
     transform: scale(1.05);
   }
+
+  .buttonsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 2rem;
+
+    button {
+      color: rgba(0, 0, 0, 0.85);
+      background: transparent;
+      cursor: pointer;
+      transition: 0.1s ease;
+      font-size: 1.5rem;
+
+      &:hover {
+        color: rgba(0, 0, 0, 1);
+      }
+    }
+  }
 `;
